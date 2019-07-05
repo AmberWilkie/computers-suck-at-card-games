@@ -45,7 +45,7 @@ game_links = map(complete_links, spans)
 
 
 with open('card_games.csv', mode='w') as card_games:
-    employee_writer = csv.writer(card_games, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    csv_writer = csv.writer(card_games, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
     for link in list(game_links)[0:2]:
         game_response = requests.get(link)
@@ -58,4 +58,4 @@ with open('card_games.csv', mode='w') as card_games:
         for text_item in content_parts:
             text = text + text_item
 
-        employee_writer.writerow([f'\n\n<title>{title}</title>', text])
+        csv_writer.writerow([f'\n\n<title>{title}</title>', text])
