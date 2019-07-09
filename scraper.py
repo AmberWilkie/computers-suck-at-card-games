@@ -33,7 +33,7 @@ def content_manipulation(content):
     return content.text
 
 def kabobify(text):
-    return text.lower().replace(' ', '-')
+    return text.lower().replace(' ', '-').replace(',', '').replace('/', '')
 
 url = "https://www.pagat.com/alpha/"
 response = requests.get(url)
@@ -45,7 +45,7 @@ spans = list(filter(span_filter, soup.find_all(class_="lname")))
 game_links = list(map(complete_links, spans))
 # pdb.set_trace()
 
-for link in game_links[0:1]:
+for link in game_links:
     game_response = requests.get(link)
     game_soup = BeautifulSoup(game_response.content, "html.parser")
     title = game_soup.findChildren('h1')[0].text.strip()
