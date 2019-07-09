@@ -2,9 +2,9 @@
 
 ## Objective
 1. Become more familiar with the Python language.
-2. Scrape the [Pagat](https://www.pagat.com) database in order to create a card game dataset for feeding to a neural network.
+2. ~~Scrape the [Pagat](https://www.pagat.com) database in order to create a card game dataset for feeding to a neural network.~~
 3. Format data for easier machine reading.
-4. Generate a CSV ("card_games.csv").
+4. Generate text files from data.
 
 ## Dependencies
 * BeautifulSoup

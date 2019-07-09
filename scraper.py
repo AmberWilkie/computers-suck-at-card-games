@@ -29,33 +29,33 @@ def content_filter(content):
 
 def content_manipulation(content):
     if content.name == 'h2':
-        return f"\n<{content.text.lower().replace(' ', '-')}>"
+        return f"\n<{kabobify(content.text)}>"
     return content.text
 
-
+def kabobify(text):
+    return text.lower().replace(' ', '-')
 
 url = "https://www.pagat.com/alpha/"
 response = requests.get(url)
 
-soup = BeautifulSoup(response.text, "html.parser")
+soup = BeautifulSoup(response.content, "html.parser")
 # pdb.set_trace()
 
-spans = filter(span_filter, soup.find_all(class_="lname"))
-game_links = map(complete_links, spans)
+spans = list(filter(span_filter, soup.find_all(class_="lname")))
+game_links = list(map(complete_links, spans))
+# pdb.set_trace()
 
+for link in game_links[0:1]:
+    game_response = requests.get(link)
+    game_soup = BeautifulSoup(game_response.content, "html.parser")
+    title = game_soup.findChildren('h1')[0].text.strip()
 
-with open('card_games.csv', mode='w') as card_games:
-    csv_writer = csv.writer(card_games, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
-    for link in list(game_links)[0:2]:
-        game_response = requests.get(link)
-        game_soup = BeautifulSoup(game_response.text, "html.parser")
-        title = game_soup.findChildren('h1')[0].text.strip()
-
-        text = ''
-        content = game_soup.find_all(class_="mainContent")[0]
-        content_parts = map(content_manipulation, filter(content_filter, content.findChildren()))
-        for text_item in content_parts:
-            text = text + text_item
-
-        csv_writer.writerow([f'\n\n<title>{title}</title>', text])
+    text = ''
+    content = game_soup.find_all(class_="mainContent")[0]
+    content_parts = map(content_manipulation, filter(content_filter, content.findChildren()))
+    for text_item in content_parts:
+        text = text + text_item
+    
+    with open(f"card-games/{kabobify(title)}.txt", mode='w') as card_game:
+        csv_writer = csv.writer(card_game, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow([f"<title>{title}</title>", text])
