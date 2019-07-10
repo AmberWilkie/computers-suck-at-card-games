@@ -19,7 +19,7 @@
 ## Run it!
 1. Install dependencies (`pip3 install bs4 requests urllib3 tensorflow textgenrnn`)
 2. `python3 ./scraper.py`
-3. 
+3. `python3 ./game-generator.py`
 
 
 ## To do
